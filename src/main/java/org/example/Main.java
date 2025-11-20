@@ -22,7 +22,7 @@ public final class Main {
         final BufferedImage original = ImageIO.read(input);
 
         final int cellHeight = 8;
-        final int cellWidth = 4;
+        final int cellWidth = 8;
 
         final int w = (original.getWidth() / cellWidth) * cellWidth;
         final int h = (original.getHeight() / cellHeight) * cellHeight;
