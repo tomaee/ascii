@@ -1,17 +1,13 @@
 package org.example;
 
 import java.awt.image.BufferedImage;
-import java.util.Arrays;
 
 public final class AlignmentInsensitiveShapeSimilarity {
 
-    // Number of angular sectors in the histogram
     private static final int ANGLE_BINS = 12;
 
-    // Radii used for multi-scale structural sampling (paper-inspired preset)
     private final int[] radii = new int[]{4, 8, 14};
 
-    // Weights per radius (must sum to 1)
     private final double[] radiusWeights = new double[]{0.5, 0.3, 0.2};
 
 
@@ -27,7 +23,7 @@ public final class AlignmentInsensitiveShapeSimilarity {
             normalize(hA);
             normalize(hB);
 
-            totalScore += radiusWeights[i] * chiSquareDistance(hA, hB);
+            totalScore += radiusWeights[i] * diffSquareDistance(hA, hB);
         }
 
         return totalScore;
@@ -79,7 +75,7 @@ public final class AlignmentInsensitiveShapeSimilarity {
     }
 
 
-    private double chiSquareDistance(double[] h1, double[] h2) {
+    private double diffSquareDistance(double[] h1, double[] h2) {
         double sum = 0;
         for (int i = 0; i < h1.length; i++) {
             final double a = h1[i];

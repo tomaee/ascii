@@ -12,7 +12,7 @@ public final class Main {
 
         System.out.println("Working directory: " + System.getProperty("user.dir"));
 
-        final File input = new File("./images/bicho.jpg");
+        final File input = new File("./images/bart.jpg");
 
         if (!input.exists() || !input.canRead()) {
             System.err.println("Cannot read: " + input.getPath());
@@ -38,14 +38,17 @@ public final class Main {
         final Map<Character, BufferedImage> chars =
                 CharacterImageFactory.generateAsciiSet(font, cellWidth, cellHeight);
 
-        final CellGridMatcherOutline matcher = new CellGridMatcherOutline(chars, cellWidth, cellHeight);
-        String ascii = matcher.matchToGrid(skeleton);
-        ascii = ASCIISmoother.smooth(ascii);
+        final CellGridMatcherOutline initialMatcher = new CellGridMatcherOutline(chars, cellWidth, cellHeight);
+        String initialAscii = initialMatcher.matchToGrid(skeleton);
 
-        System.out.println("\n===== ASCII OUTPUT =====\n");
-        System.out.println(ascii);
+        final Optimizer optimizer = new Optimizer(chars, cellWidth, cellHeight);
 
-        java.nio.file.Files.writeString(new File("ascii_output.txt").toPath(), ascii);
+        initialAscii = ASCIISmoother.smooth(initialAscii);
+
+        System.out.println("\n===== ASCII OUTPUT (Optimized) =====\n");
+        System.out.println(initialAscii);
+
+        java.nio.file.Files.writeString(new File("ascii_output.txt").toPath(), initialAscii);
         System.out.println("\n💾 Saved to ascii_output.txt");
     }
 
