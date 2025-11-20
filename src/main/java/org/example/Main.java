@@ -49,7 +49,7 @@ public final class Main {
         System.out.println(initialAscii);
 
         java.nio.file.Files.writeString(new File("ascii_output.txt").toPath(), initialAscii);
-        System.out.println("\n💾 Saved to ascii_output.txt");
+        System.out.println("\nSaved to ascii_output.txt");
     }
 
     public static String stretchAscii(String ascii, int factor) {
