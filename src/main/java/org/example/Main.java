@@ -22,7 +22,7 @@ public final class Main {
         final BufferedImage original = ImageIO.read(input);
 
         final int cellHeight = 8;
-        final int cellWidth = 8;
+        final int cellWidth = 4;
 
         final int w = (original.getWidth() / cellWidth) * cellWidth;
         final int h = (original.getHeight() / cellHeight) * cellHeight;
@@ -34,7 +34,7 @@ public final class Main {
 
         final BufferedImage skeleton = Skeletonizer.thin(img);
 
-        final Font font = new Font("Courier New", Font.PLAIN, 16);
+        final Font font = new Font("Arial", Font.PLAIN, 16);
         final Map<Character, BufferedImage> chars =
                 CharacterImageFactory.generateAsciiSet(font, cellWidth, cellHeight);
 
