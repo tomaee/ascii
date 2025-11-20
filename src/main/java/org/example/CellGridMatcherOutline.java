@@ -39,36 +39,19 @@ public final class CellGridMatcherOutline {
 
     public String matchToGrid(final BufferedImage skeleton) {
 
-        final int totalRows = skeleton.getHeight() / cellHeight;
-        final int totalCols = skeleton.getWidth() / cellWidth;
-
-        // The image is padded by cellWidth * 2 pixels, which is 2 cells wide on all sides.
-        final int PADDING_CELLS = 2;
-
-        // Define the bounds for the inner content area (inclusive start, exclusive end)
-        final int startX = PADDING_CELLS;
-        final int startY = PADDING_CELLS;
-        final int endX = totalCols - PADDING_CELLS;
-        final int endY = totalRows - PADDING_CELLS;
+        final int rows = skeleton.getHeight() / cellHeight;
+        final int cols = skeleton.getWidth() / cellWidth;
 
         final StringBuilder result = new StringBuilder();
 
-        for (int y = 0; y < totalRows; y++) {
+        for (int y = 0; y < rows; y++) {
+            for (int x = 0; x < cols; x++) {
 
-            // --- 1. Handle TOP/BOTTOM PADDING rows ---
-            if (y < startY || y >= endY) {
-                // The entire row is padding, fill with spaces
-                result.append(" ".repeat(totalCols)).append("\n");
-                continue;
-            }
-
-            // --- 2. Process Content Row (y is in [startY, endY - 1]) ---
-
-            // Add LEFT PADDING spaces
-            result.append(" ".repeat(startX));
-
-            // Process inner content cells for this row (x is in [startX, endX - 1])
-            for (int x = startX; x < endX; x++) {
+                // hard border rule (1-cell wide border restored)
+                if (x == 0 || y == 0 || x == cols - 1 || y == rows - 1) {
+                    result.append(' ');
+                    continue;
+                }
 
                 final BufferedImage cell = skeleton.getSubimage(
                         x * cellWidth, y * cellHeight, cellWidth, cellHeight
@@ -99,10 +82,6 @@ public final class CellGridMatcherOutline {
 
                 result.append(best);
             }
-
-            // Add RIGHT PADDING spaces
-            result.append(" ".repeat(totalCols - endX));
-
             result.append("\n");
         }
 
@@ -168,5 +147,4 @@ public final class CellGridMatcherOutline {
         if (diag1 >= diag2) return StrokeType.DIAG1;
         return StrokeType.DIAG2;
     }
-
 }

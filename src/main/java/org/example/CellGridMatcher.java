@@ -31,11 +31,6 @@ public final class CellGridMatcher {
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < cols; x++) {
 
-                if (isBorderCell(x, y, cols, rows)) {
-                    result.append(' ');
-                    continue;
-                }
-
                 // Extract cell
                 final BufferedImage cell = skeleton.getSubimage(
                         x * cellWidth,

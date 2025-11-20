@@ -12,10 +12,10 @@ public final class Main {
 
         System.out.println("Working directory: " + System.getProperty("user.dir"));
 
-        final File input = new File("./images/bart.jpg");
+        final File input = new File("./images/bicho.jpg");
 
         if (!input.exists() || !input.canRead()) {
-            System.err.println("❌ Cannot read: " + input.getPath());
+            System.err.println("Cannot read: " + input.getPath());
             System.exit(1);
         }
 
@@ -24,20 +24,16 @@ public final class Main {
         final int cellHeight = 8;
         final int cellWidth = 8;
 
-        // Resize to grid
         final int w = (original.getWidth() / cellWidth) * cellWidth;
         final int h = (original.getHeight() / cellHeight) * cellHeight;
         BufferedImage img = EdgeDetector.resizeTo(original, w, h);
 
-        // Preprocessing
         img = EdgeDetector.toGrayscale(img);
         img = EdgeDetector.gaussianBlur(img, 1);
         img = EdgeDetector.sobelEdge(img, 50.0);
-        img = EdgeDetector.pad(img, cellWidth * 2);
 
         final BufferedImage skeleton = Skeletonizer.thin(img);
 
-        // Character glyph atlas
         final Font font = new Font("Courier New", Font.PLAIN, 16);
         final Map<Character, BufferedImage> chars =
                 CharacterImageFactory.generateAsciiSet(font, cellWidth, cellHeight);
