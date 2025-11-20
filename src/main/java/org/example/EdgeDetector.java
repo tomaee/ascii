@@ -5,15 +5,6 @@ import java.awt.image.BufferedImage;
 
 public final class EdgeDetector {
 
-    public static BufferedImage resizeTo(final BufferedImage src, int w, int h) {
-        final Image scaled = src.getScaledInstance(w, h, Image.SCALE_SMOOTH);
-        final BufferedImage out = new BufferedImage(w, h, BufferedImage.TYPE_BYTE_BINARY);
-        final Graphics2D g = out.createGraphics();
-        g.drawImage(scaled, 0, 0, null);
-        g.dispose();
-        return out;
-    }
-
     public static BufferedImage toGrayscale(final BufferedImage img) {
         final BufferedImage out = new BufferedImage(img.getWidth(), img.getHeight(), BufferedImage.TYPE_BYTE_GRAY);
         final Graphics2D g = out.createGraphics();

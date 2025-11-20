@@ -20,10 +20,9 @@ public final class CellGridMatcherOutline {
             StrokeType.HORIZONTAL, new char[]{'-', '_', '=', '~'},
             StrokeType.DIAG1, new char[]{'/', 'Y', '7'},
             StrokeType.DIAG2, new char[]{'\\', 'L', 'J'},
-            StrokeType.JUNCTION, new char[]{'+', '*', '#', 'X'}
+            StrokeType.JUNCTION, new char[]{'+', '*', '#', 'X', 'O'}
     );
 
-    // Multi-scale configuration (scales and weights must sum to 1)
     private final double[] scales = new double[]{0.6, 1.0, 1.6};
     private final double[] weights = new double[]{0.3, 0.5, 0.2};
 
@@ -32,9 +31,6 @@ public final class CellGridMatcherOutline {
         this.charImages = new HashMap<>(charImages);
         this.cellWidth = cellWidth;
         this.cellHeight = cellHeight;
-        if (scales.length != weights.length) {
-            throw new IllegalArgumentException("scales and weights length must match");
-        }
     }
 
     public String matchToGrid(final BufferedImage skeleton) {
@@ -47,7 +43,6 @@ public final class CellGridMatcherOutline {
         for (int y = 0; y < rows; y++) {
             for (int x = 0; x < cols; x++) {
 
-                // hard border rule (1-cell wide border restored)
                 if (x == 0 || y == 0 || x == cols - 1 || y == rows - 1) {
                     result.append(' ');
                     continue;
@@ -58,7 +53,7 @@ public final class CellGridMatcherOutline {
                 );
 
                 final int ink = countInk(cell);
-                if (ink < 2) { // relaxed for thin lines
+                if (ink < 2) {
                     result.append(' ');
                     continue;
                 }
@@ -88,9 +83,6 @@ public final class CellGridMatcherOutline {
         return result.toString();
     }
 
-    // ------------------------
-    // multi-scale scoring
-    // ------------------------
     private double computeMultiScaleScore(final BufferedImage cell, final BufferedImage glyph) {
         double sum = 0.0;
         for (int i = 0; i < scales.length; i++) {
@@ -109,16 +101,13 @@ public final class CellGridMatcherOutline {
         return sum;
     }
 
-    // ------------------------
-    // helpers
-    // ------------------------
     private int countInk(final BufferedImage img) {
         int c = 0;
         final int h = img.getHeight();
         final int w = img.getWidth();
-        for (int yy = 0; yy < h; yy++) {
-            for (int xx = 0; xx < w; xx++) {
-                if ((img.getRGB(xx, yy) & 0xFF) == 0) c++;
+        for (int y = 0; y < h; y++) {
+            for (int x = 0; x < w; x++) {
+                if ((img.getRGB(x, y) & 0xFF) == 0) c++;
             }
         }
         return c;

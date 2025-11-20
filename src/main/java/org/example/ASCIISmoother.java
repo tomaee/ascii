@@ -2,9 +2,7 @@ package org.example;
 
 public final class ASCIISmoother {
 
-    // How aggressively smoothing should override a cell
-    // 0.30 = strong smoothing, 0.50 = balanced, 0.65 = light smoothing, 0.85 = almost no smoothing
-    private static final double SMOOTHING_WEIGHT = 0.65;
+    private static final double SMOOTHING_WEIGHT = 0.85;
 
     public static String smooth(String ascii) {
 
@@ -23,7 +21,6 @@ public final class ASCIISmoother {
                 final char center = grid[y][x];
                 final int centerGroup = StrokeGroups.getGroup(center);
 
-                // Empty or undefined stays as is
                 if (centerGroup == 0) {
                     out[y][x] = ' ';
                     continue;
@@ -32,7 +29,6 @@ public final class ASCIISmoother {
                 int[] groupCounts = new int[6];
                 int neighborTotal = 0;
 
-                // Count neighbors
                 for (int dy = -1; dy <= 1; dy++) {
                     for (int dx = -1; dx <= 1; dx++) {
 
@@ -54,7 +50,6 @@ public final class ASCIISmoother {
                     }
                 }
 
-                // Find most frequent neighbor stroke type
                 int bestGroup = centerGroup;
                 int bestScore = groupCounts[centerGroup];
 
@@ -67,7 +62,6 @@ public final class ASCIISmoother {
 
                 boolean replace = false;
 
-                // Only override if almost all neighbors agree against center
                 if (bestGroup != centerGroup && neighborTotal > 0) {
 
                     final double dominance = (double) bestScore / neighborTotal;

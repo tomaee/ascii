@@ -12,7 +12,7 @@ public final class Main {
 
         System.out.println("Working directory: " + System.getProperty("user.dir"));
 
-        final File input = new File("./images/bart.jpg");
+        final File input = new File("./images/foguete.jpg");
 
         if (!input.exists() || !input.canRead()) {
             System.err.println("Cannot read: " + input.getPath());
@@ -26,7 +26,7 @@ public final class Main {
 
         final int w = (original.getWidth() / cellWidth) * cellWidth;
         final int h = (original.getHeight() / cellHeight) * cellHeight;
-        BufferedImage img = EdgeDetector.resizeTo(original, w, h);
+        BufferedImage img = ImageUtils.resizeTo(original, w, h);
 
         img = EdgeDetector.toGrayscale(img);
         img = EdgeDetector.gaussianBlur(img, 1);
@@ -40,8 +40,6 @@ public final class Main {
 
         final CellGridMatcherOutline initialMatcher = new CellGridMatcherOutline(chars, cellWidth, cellHeight);
         String initialAscii = initialMatcher.matchToGrid(skeleton);
-
-        final Optimizer optimizer = new Optimizer(chars, cellWidth, cellHeight);
 
         initialAscii = ASCIISmoother.smooth(initialAscii);
 
