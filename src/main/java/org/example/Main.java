@@ -12,7 +12,7 @@ public final class Main {
 
         System.out.println("Working directory: " + System.getProperty("user.dir"));
 
-        final File input = new File("./images/foguete.jpg");
+        final File input = new File("./images/bart.jpg");
 
         if (!input.exists() || !input.canRead()) {
             System.err.println("Cannot read: " + input.getPath());
