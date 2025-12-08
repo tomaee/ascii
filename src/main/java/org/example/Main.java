@@ -12,7 +12,7 @@ public final class Main {
 
         System.out.println("Working directory: " + System.getProperty("user.dir"));
 
-        final File input = new File("./images/bart.jpg");
+        final File input = new File("./images/train.jpg");
 
         if (!input.exists() || !input.canRead()) {
             System.err.println("Cannot read: " + input.getPath());
@@ -22,7 +22,7 @@ public final class Main {
         final BufferedImage original = ImageIO.read(input);
 
         final int cellHeight = 8;
-        final int cellWidth = 8;
+        final int cellWidth = 4     ;
 
         final int w = (original.getWidth() / cellWidth) * cellWidth;
         final int h = (original.getHeight() / cellHeight) * cellHeight;
@@ -34,7 +34,7 @@ public final class Main {
 
         final BufferedImage skeleton = Skeletonizer.thin(img);
 
-        final Font font = new Font("Arial", Font.PLAIN, 16);
+        final Font font = new Font("Arial", Font.PLAIN, 8);
         final Map<Character, BufferedImage> chars =
                 CharacterImageFactory.generateAsciiSet(font, cellWidth, cellHeight);
 
@@ -43,7 +43,7 @@ public final class Main {
 
         initialAscii = ASCIISmoother.smooth(initialAscii);
 
-        System.out.println("\n===== ASCII OUTPUT (Optimized) =====\n");
+        System.out.println("\n===== ASCII OUTPUT =====\n");
         System.out.println(initialAscii);
 
         java.nio.file.Files.writeString(new File("ascii_output.txt").toPath(), initialAscii);
