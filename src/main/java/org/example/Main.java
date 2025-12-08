@@ -6,6 +6,8 @@ import java.awt.image.BufferedImage;
 import java.io.File;
 import java.util.Map;
 
+import static java.nio.file.Files.writeString;
+
 public final class Main {
 
     public static void main(final String[] args) throws Exception {
@@ -46,7 +48,7 @@ public final class Main {
         System.out.println("\n===== ASCII OUTPUT =====\n");
         System.out.println(initialAscii);
 
-        java.nio.file.Files.writeString(new File("ascii_output.txt").toPath(), initialAscii);
+        writeString(new File("ascii_output.txt").toPath(), initialAscii);
         System.out.println("\nSaved to ascii_output.txt");
     }
 
