@@ -114,20 +114,23 @@ public final class CellGridMatcherOutline {
     }
 
     private StrokeType classifyStroke(final BufferedImage img) {
-
         int vertical = 0, horizontal = 0, diag1 = 0, diag2 = 0;
         final int h = img.getHeight();
         final int w = img.getWidth();
 
-        for (int y = 1; y < h; y++) {
-            for (int x = 1; x < w; x++) {
+        for (int y = 1; y < h - 1; y++) {
+            for (int x = 1; x < w - 1; x++) {
                 final boolean pix = (img.getRGB(x, y) & 0xFF) == 0;
                 if (!pix) continue;
 
                 if ((img.getRGB(x, y - 1) & 0xFF) == 0) vertical++;
                 if ((img.getRGB(x - 1, y) & 0xFF) == 0) horizontal++;
-                if ((img.getRGB(x - 1, y - 1) & 0xFF) == 0) diag1++;
-                if (x < w - 1 && (img.getRGB(x + 1, y - 1) & 0xFF) == 0) diag2++;
+
+                if ((img.getRGB(x + 1, y - 1) & 0xFF) == 0) diag1++;
+                if (y < h - 1 && (img.getRGB(x - 1, y + 1) & 0xFF) == 0) diag1++;
+
+                if ((img.getRGB(x - 1, y - 1) & 0xFF) == 0) diag2++;
+                if (y < h - 1 && (img.getRGB(x + 1, y + 1) & 0xFF) == 0) diag2++;
             }
         }
 
